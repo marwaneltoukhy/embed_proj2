@@ -51,8 +51,8 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-int turn = 0;
-volatile int start;
+int volatile turn = 0;
+int volatile start;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -123,10 +123,10 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		uint8_t direction[] = {0xC1, 0xC9, 0xC1, 0xC9,0xC0};
-		uint8_t speed[] = {127, 32, 0};
+		uint8_t speed[] = {64, 32, 0};
 		
 		
-		HAL_Delay(50);
+		//HAL_Delay(50);
 		start = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11);
 		if(turn == 0 && start == 1){
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
@@ -139,8 +139,8 @@ int main(void)
 			HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
 			//HAL_Delay(500);
 			HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-			uint32_t time = (uint32_t)distance(1,1.3);
-			HAL_Delay(1000);
+			uint32_t time = (uint32_t)distance(1,0.70);
+			HAL_Delay(time);
 			turn = 1;
 		}
 		else if(turn == 1 && start == 0){
@@ -156,6 +156,16 @@ int main(void)
 //			HAL_Delay(10000);
 //			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 			turn = 0;
+		}
+		else{
+			HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+			
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
 		}
   }
   /* USER CODE END 3 */

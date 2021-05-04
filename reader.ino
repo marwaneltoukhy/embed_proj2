@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
   state = digitalRead(inputPin);
-  Serial.println(state);
+//  Serial.println(state);
   if (state == HIGH) {
     Serial.println("scan start");
     int n = WiFi.scanNetworks();
@@ -36,7 +36,7 @@ void loop() {
       }
     }
     Serial.println("");
-    delay(5000);
+//    x(5000);
     digitalWrite(outPin, HIGH);
   } else {
     digitalWrite(outPin, LOW);
