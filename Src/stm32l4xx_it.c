@@ -57,13 +57,14 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern I2C_HandleTypeDef hi2c1;
 extern TIM_HandleTypeDef htim1;
 /* USER CODE BEGIN EV */
 extern TIM_HandleTypeDef htim1;
 extern UART_HandleTypeDef huart2;
 int change = 0;
 volatile int val1, val2;
-volatile float diff, distance;
+volatile float diff, dist;
 extern int f, Buzz_delay;
 extern int turn;
 /* USER CODE END EV */
@@ -199,6 +200,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 1 */
 }
 
+
 /******************************************************************************/
 /* STM32L4xx Peripheral Interrupt Handlers                                    */
 /* Add here the Interrupt Handlers for the used peripherals.                  */
@@ -211,7 +213,7 @@ void SysTick_Handler(void)
   */
 void TIM1_CC_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM1_CC_IRQn 0 */
+	
 	char output[100] = {0}; 
 		if(change == 0){
 		val1 = HAL_TIM_ReadCapturedValue(&htim1, TIM_CHANNEL_1);
@@ -225,27 +227,31 @@ void TIM1_CC_IRQHandler(void)
 		if(val1 > val2)
 			diff = val1-val2;
 		else diff = val2-val1;
-		distance = diff/58;
-		sprintf(output, "distance: %.4f \r\n", distance);
+		dist = diff/58;
+		sprintf(output, "distance: %.4f \r\n", dist);
 		HAL_UART_Transmit(&huart2,(uint8_t*)output, sizeof(output), HAL_MAX_DELAY);
 	}
   HAL_TIM_IRQHandler(&htim1);
 
   /* USER CODE END TIM1_CC_IRQn 0 */
-//  HAL_TIM_IRQHandler(&htim1);
+  HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_CC_IRQn 1 */
 //		if (distance <= 4)
 //			{
 //			f = 200;
 //			Buzz_delay = 200;
 //		}
-		if (distance <=8)
-			{
-				turn = 1;
-			}
-		else{
-				turn = 0;
-			}
+//	if(distance < 2 || distance > 100)
+//		turn = 0;
+//	else{
+//		if (distance <=40)
+//			{
+//				turn = 1;
+//			}
+//		else{
+//				turn = 0;
+//			}
+//		}
 //		else if (distance <=12)
 //			{
 //			f = 600;
@@ -262,6 +268,34 @@ void TIM1_CC_IRQHandler(void)
 //			Buzz_delay = 1000;
 //		}
   /* USER CODE END TIM1_CC_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C1 event interrupt.
+  */
+void I2C1_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C1 error interrupt.
+  */
+void I2C1_ER_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+
+  /* USER CODE END I2C1_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  /* USER CODE END I2C1_ER_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
