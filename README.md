@@ -24,6 +24,13 @@ until now The application  have only 1 starting point, and the map is being hard
 
 ## Architecture:
 
+### Architecture of the whole system:
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/archi.PNG)
+
+### Black box architecture:
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/black_box.PNG)
+
+### Architecture of STM32 with dagu:
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/proto_desing_1.PNG)
 
 
