@@ -25,7 +25,7 @@ until now The application  have only 1 starting point, and the map is being hard
 ## Architecture:
 
 ### Architecture of the whole system:
-![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/archi.png)
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/archi_des.png)
 
 ### Black box architecture:
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/black_box.png)
