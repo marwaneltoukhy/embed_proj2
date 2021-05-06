@@ -34,6 +34,11 @@ until now The application  have only 1 starting point, and the map is being hard
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/proto_desing_1.PNG)
 
 
+# Demo 1:
+
+[Dagu moving 1 meter](https://drive.google.com/file/d/1-ZOl79PqEXByu9dAtm5cUPRgDmWicd5Q/view?usp=sharing)
+
+[ESP32 data gathering](https://drive.google.com/file/d/1Y1yaBVXY792gIeG7-uqBGNeryCGUzogs/view?usp=sharing)
 
 ## Challenges:
 
