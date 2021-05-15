@@ -41,3 +41,8 @@ test2\main.o: ../Inc/ffconf.h
 test2\main.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
 test2\main.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 test2\main.o: ../Inc/user_diskio.h
+test2\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+test2\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+test2\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+test2\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
+test2\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

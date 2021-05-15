@@ -1,4 +1,5 @@
 test2\syscall.o: ../Middlewares/Third_Party/FatFs/src/option/syscall.c
+test2\syscall.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 test2\syscall.o: ../Middlewares/Third_Party/FatFs/src/option/../ff.h
 test2\syscall.o: ../Middlewares/Third_Party/FatFs/src/option/../integer.h
 test2\syscall.o: ../Inc/ffconf.h

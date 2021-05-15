@@ -24,7 +24,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <errno.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +47,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
+UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
@@ -52,6 +57,7 @@ SPI_HandleTypeDef hspi1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -64,11 +70,30 @@ FILINFO fno;
 FRESULT fresult;  // result
 UINT br, bw;  // File read/write count
 char buffer[1024];
+char direction[1024];
+int c;
 
 /**** capacity related *****/
 FATFS *pfs;
 DWORD fre_clust;
 uint32_t total, free_space;
+
+void send_uart(char *string){
+	uint8_t len = strlen(string);
+	HAL_UART_Transmit(&huart2, (uint8_t *) string, len, HAL_MAX_DELAY);
+}
+
+int bufsize(char *buf){
+	int i = 0;
+	while (*buf++ != '\0') i++;
+	return i;
+}
+
+void bufclear(void){
+	for(int i = 0; i < 1024; i++){
+		buffer[i] = '\0';
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -102,6 +127,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_FATFS_Init();
+	MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
   fresult = f_mount(&fs, "/", 1);
@@ -110,23 +136,38 @@ int main(void)
 	f_getfree("", &fre_clust, &pfs);
 
 	total = (uint32_t)((pfs->n_fatent - 2) * pfs->csize * 0.5);
+	sprintf (buffer, "SD CARD Total Size: \t%lu\n\r",(unsigned long) total);
+	send_uart(buffer);
+	bufclear();
+	
 
 	free_space = (uint32_t)(fre_clust * pfs->csize * 0.5);
+	sprintf (buffer, "SD CARD free space: \t%lu\n\r",(unsigned long) free_space);
+	send_uart(buffer);
+	bufclear();
+	
+	if(free_space < 100){
+		send_uart("WARNING: not enough free space!\n\n\r");
+	}
 
-  	/* Open file to write/ create a file if it doesn't exist */
-      fresult = f_open(&fil, "TEST.TXT", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
+//  	/* Open file to write/ create a file if it doesn't exist */
+//      fresult = f_open(&fil, "TEST.TXT", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
 
-  	/* Writing text */
-  	//f_puts("This data is from the FILE1.txt. And it was written using ...f_puts... ", &fil);
-		
-		f_read(&fil, buffer, f_size(&fil), &br);
-		f_close(&fil);
-		
-		fresult = f_open(&fil, "file2.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
-		f_puts(buffer, &fil);
+//  	/* Writing text */
+//  	//f_puts("This data is from the FILE1.txt. And it was written using ...f_puts... ", &fil);
+//		
+//		f_read(&fil, buffer, f_size(&fil), &br);
+//		f_close(&fil);
+//		
+//		fresult = f_open(&fil, "file2.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
+//		f_puts(buffer, &fil);
 
-  	/* Close file */
-  	fresult = f_close(&fil);
+//  	/* Close file */
+//  	fresult = f_close(&fil);
+	fresult = f_open(&fil, "FILE1.TXT", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
+	f_read(&fil, buffer, f_size(&fil), &br);
+	send_uart(buffer);
+	f_close(&fil);
 
   /* USER CODE END 2 */
 
@@ -213,6 +254,41 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 9600;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
 
 }
 
