@@ -47,6 +47,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -57,6 +58,7 @@ UART_HandleTypeDef huart2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -127,6 +129,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_FATFS_Init();
+	MX_USART1_UART_Init();
 	MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
@@ -150,24 +153,29 @@ int main(void)
 		send_uart("WARNING: not enough free space!\n\n\r");
 	}
 
-//  	/* Open file to write/ create a file if it doesn't exist */
-//      fresult = f_open(&fil, "TEST.TXT", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
-
-//  	/* Writing text */
-//  	//f_puts("This data is from the FILE1.txt. And it was written using ...f_puts... ", &fil);
-//		
-//		f_read(&fil, buffer, f_size(&fil), &br);
-//		f_close(&fil);
-//		
-//		fresult = f_open(&fil, "file2.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
-//		f_puts(buffer, &fil);
-
-//  	/* Close file */
-//  	fresult = f_close(&fil);
 	fresult = f_open(&fil, "FILE1.TXT", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
 	f_read(&fil, buffer, f_size(&fil), &br);
 	send_uart(buffer);
 	f_close(&fil);
+	
+	int count = 0;
+	
+	for( int i = 0; i < sizeof(buffer); i++){
+		if((buffer[i] != ' ') && (buffer[i] != '\n') && (buffer[i] != '\r')){
+			if(buffer[i] == 'F'){
+				direction[count] = buffer[i];
+				count++;
+				while(buffer[i+2] > '0'){
+					direction[count] = buffer[i];
+					count++;
+					buffer[i+2]--;
+				}
+			}
+		}
+
+	}
+	count = 0;
+	send_uart(direction);
 
   /* USER CODE END 2 */
 
@@ -175,6 +183,26 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		uint8_t direction[] = {0xC1, 0xC9, 0xC1, 0xC9,0xC0};
+		uint8_t speed[] = {64, 32, 0};
+		if(isalpha(direction[count])){
+			if(direction[count] == 'F'){
+				HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+				HAL_Delay(10);
+				
+				HAL_UART_Transmit(&huart1, &speed[1], 1, HAL_MAX_DELAY);
+				
+				//HAL_Delay(10);
+				HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+				//HAL_Delay(500);
+				HAL_UART_Transmit(&huart1, &speed[1], 1, HAL_MAX_DELAY);
+				HAL_Delay(3000);
+				count++;
+			}
+		}
+		if(isdigit(direction[count])){
+			
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -254,6 +282,41 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 19200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
