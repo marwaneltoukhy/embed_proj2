@@ -72,8 +72,11 @@ FILINFO fno;
 FRESULT fresult;  // result
 UINT br, bw;  // File read/write count
 char buffer[1024];
+char temp[1024];
 char direction[1024];
 int c;
+int volatile turn = 0;
+int volatile start;
 
 /**** capacity related *****/
 FATFS *pfs;
@@ -162,46 +165,88 @@ int main(void)
 	
 	for( int i = 0; i < sizeof(buffer); i++){
 		if((buffer[i] != ' ') && (buffer[i] != '\n') && (buffer[i] != '\r')){
-			if(buffer[i] == 'F'){
-				direction[count] = buffer[i];
+				temp[count] = buffer[i];
 				count++;
-				while(buffer[i+2] > '0'){
-					direction[count] = buffer[i];
-					count++;
-					buffer[i+2]--;
-				}
-			}
 		}
-
 	}
 	count = 0;
+	
+	int num;
+	
+	for( int i = 0; i < sizeof(temp); i++){
+		if(temp[i] == 'F'){
+			sscanf(&temp[i+1], "%d", &num);
+			while(num > 0){
+				direction[count] = temp[i];
+				count++;
+				num--;
+			}
+		}
+		else if(temp[i] == 'B'){
+			sscanf(&temp[i+1], "%d", &num);
+			while(num > 0){
+				direction[count] = 'F';
+				count++;
+				num--;
+			}
+		}
+		else{
+			direction[count] = temp[i];
+			count++;
+		}
+	}
+	
 	send_uart(direction);
-
+	count = 0;
+	turn = 1;
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		uint8_t direction[] = {0xC1, 0xC9, 0xC1, 0xC9,0xC0};
+		uint8_t wheel[] = {0xC1, 0xC9, 0xC1, 0xC9,0xC0};
 		uint8_t speed[] = {64, 32, 0};
-		if(isalpha(direction[count])){
-			if(direction[count] == 'F'){
-				HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
-				HAL_Delay(10);
-				
-				HAL_UART_Transmit(&huart1, &speed[1], 1, HAL_MAX_DELAY);
-				
-				//HAL_Delay(10);
-				HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
-				//HAL_Delay(500);
-				HAL_UART_Transmit(&huart1, &speed[1], 1, HAL_MAX_DELAY);
-				HAL_Delay(3000);
-				count++;
-			}
-		}
-		if(isdigit(direction[count])){
+		start = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11);
+		if(direction[count] == 'F' && turn == 0 && start == 1){
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			HAL_UART_Transmit(&huart1, &wheel[0], 1, HAL_MAX_DELAY);
+			HAL_Delay(10);
 			
+			HAL_UART_Transmit(&huart1, &speed[1], 1, HAL_MAX_DELAY);
+			
+			//HAL_Delay(10);
+			HAL_UART_Transmit(&huart1, &wheel[1], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[1], 1, HAL_MAX_DELAY);
+			HAL_Delay(3000);
+			count++;
+			turn = 1;
+		}
+		else if(turn == 1 && start == 0){
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+			HAL_UART_Transmit(&huart1, &wheel[0], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+			
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &wheel[1], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+//			HAL_Delay(10000);
+//			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			turn = 0;
+		}
+		else{
+			HAL_UART_Transmit(&huart1, &wheel[0], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+			
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &wheel[1], 1, HAL_MAX_DELAY);
+			//HAL_Delay(500);
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
 		}
     /* USER CODE END WHILE */
 
