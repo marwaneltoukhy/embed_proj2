@@ -135,6 +135,8 @@ int main(void)
 	MX_USART1_UART_Init();
 	MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+	
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
 
   fresult = f_mount(&fs, "/", 1);
 
@@ -160,6 +162,7 @@ int main(void)
 	f_read(&fil, buffer, f_size(&fil), &br);
 	send_uart(buffer);
 	f_close(&fil);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 	
 	int count = 0;
 	
@@ -415,10 +418,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_7, GPIO_PIN_SET);
 
   /*Configure GPIO pin : PB0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
