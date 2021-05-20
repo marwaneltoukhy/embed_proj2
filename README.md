@@ -44,6 +44,37 @@ The Pololu TRex DMC takes the commands from the STM32 UART to drive the motors o
 ### Architecture of STM32 with dagu:
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/proto_desing_1.PNG) -->
 
+## Hardware:
+
+### ESP32
+
+The ESP32 is used because the STM32 does not have a WiFi module, so we used the ESP32 in order to collect the required data. 
+
+The WiFi library was used to get the SSID and the RSSI of the WiFi points visible to the ESP32.
+
+The SD and SPI libraries were used to write the .csv file on the SD card.
+
+### Micro SD Card Reader Module
+
+- This module was used to communicate with the Micro SD card through SPI.
+- The module is used to read and write files through a FATFS file system, it can interface with a circuit board with 5V or 3.3V (used the 5V in this project)
+- The communication interface is typical SPI interface.
+- There are six pins as shown in the diagram below. GND, VCC, MISO, MOSI, SCK, CS.
+- Voltage regulator for 4.5V ~ 5.5V down to 3.3V
+- MicroSD card connector, self bomb deck, easy card insertion.
+- Supported Card Types:
+  - Micro SD Card (<=2G)
+  - Micro SDHC Card (<=32G) (USED IN THIS PROJECT)
+- Issues faced:
+  - When interfaced with STM32 an old driver had to be installed
+  - Formatting the MicroSD card to support FATFS
+  - Doesn't support MicroSD cards with memory size greater than 32GB
+
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/sd.png)
+
+[Datasheet for reference](http://datalogger.pbworks.com/w/file/fetch/89507207/Datalogger%20-%20SD%20Memory%20Reader%20Datasheet.pdf)
+
+
 
 # Demo 1:
 
