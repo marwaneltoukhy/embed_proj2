@@ -73,7 +73,19 @@ The SD and SPI libraries were used to write the .csv file on the SD card.
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/sd.png)
 
 [Datasheet for reference](http://datalogger.pbworks.com/w/file/fetch/89507207/Datalogger%20-%20SD%20Memory%20Reader%20Datasheet.pdf)
+[Source of the picture](https://lastminuteengineers.com/arduino-micro-sd-card-module-tutorial/)
 
+### Multiplexer
+Due to the lack of components we had to make our own multiplexer using NAND gates.
+
+Used 4 SN74HC00N chip to construct the MUX
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/nand.png)
+
+Architecure of one MUX
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/mux.png)
+
+Architecure of the MUX in our system
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/mux_archi.png)
 
 
 # Demo 1:
