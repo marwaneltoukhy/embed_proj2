@@ -24,6 +24,13 @@ Indoor positioning systems has been around for decades now, and it has been a ho
 ## Architecture:
 
 ### Architecture of the system:
+
+As shown in the figure bellow, there is a feedback loop between the STM32 and the ESP32 in order for the STM32 to notify the ESP32 when the Dagu is done with moving the 1 meter, and then the ESP32 notifies the STM32 that it is done collecting data and the Dagu can start moving again.
+
+The wheel encoder is put on the Dagu wheels to calculate exactly how many times the wheel turned in order to calculate the distance that the Dagu moved to have accurate readings and localize the Dagu offline.
+
+There's a MUX so that one Micro SD card is used for both reading the directions by the STM32 and writing the .csv file using the ESP32
+
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/architecture.png)
 
 ### Flow of the system:
