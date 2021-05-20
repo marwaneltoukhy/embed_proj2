@@ -1,7 +1,7 @@
 # Project 2
 
 ## Authors: 
-- Marwan Abbas
+- Marwan Abbas        [Github Profile](https://github.com/marwaneltoukhy)
 - Omar Abu Gabal
 
 ## Repo link:
@@ -11,6 +11,10 @@ https://github.com/marwaneltoukhy/embed_proj2/tree/main
 - STM32
 - ESP32
 - dagu car
+- Wheel Encoder
+- Micro SD Card Module
+- Pololu TReX DMC
+- SN74HC00N chip
 
 ## software components:
 - STM32cubMX
@@ -35,7 +39,8 @@ The Pololu TRex DMC takes the commands from the STM32 UART to drive the motors o
 
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/architecture.png)
 
-### Flow of the system:
+### Software Architecture:
+This is the flow of our software, we did not need to use the FREERTOS as we didn't find the need for it as we are communicating two devices together and there is no priorities in taks.
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/archi_des.png)
 
 <!-- ### Black box architecture:
@@ -87,6 +92,10 @@ Architecure of one MUX
 Architecure of the MUX in our system
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/mux_archi.png)
 
+### Wheel Encoder
+
+OMAR
+
 
 # Demo 1:
 
@@ -96,8 +105,14 @@ Architecure of the MUX in our system
 
 ## Challenges:
 
-- To control the dagu to stop at certain points to collect the finger prints
-- Creating a feedback loob between the esp32 and stm32 to stop and start the movement of the car when we are not collecting the fingerprint.
+- Our main challenge was to insert the wheel encoder in the dagu, as the dagu wheels are connected directly to the DC motor
+  1. The first solution was to change the DC motors in the dagu and use a DC motor that has a wheen encoder embedded in it
+  2. The second solution was to modify the already existing wheels to put an encoder in it, which is the solution that we went with. After some research and help from Mechanical engineers we found a way to put the wheel encoder on the already existing wheels
+- The SD card interface with the STM was not working as we were trying to make it work with the wrong drivers
+- We needed to construct a MUX so that both ESP32 and STM32 read and write on the same MicroSD
+
+## Future work
+For future engineers, we might need a more autonomous way to control the Dagu, maybe using cameras to detect doors and go through them. Also, another feature that would be extremely useful is obsticle detection, as this project would stop working if the user is not extremely precise with their commands.
 
 We believe that this project would be beneficial because it will reduce the overhead of collecting the RSSI "WIFI signal strength at different location" to build the fingerprint of the building. by automating this process researchers can concentrate more on the different algorithms and techniques in which they can create to reduce the absolute mean error between the user location and the estimated location and try to create better techniques that can be robust to environment changes and can be generalized to different building at different locations. 
 
