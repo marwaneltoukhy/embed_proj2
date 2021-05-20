@@ -40,7 +40,9 @@ The Pololu TRex DMC takes the commands from the STM32 UART to drive the motors o
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/architecture.png)
 
 ### Software Architecture:
+
 This is the flow of our software, we did not need to use the FREERTOS as we didn't find the need for it as we are communicating two devices together and there is no priorities in taks.
+
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/archi_des.png)
 
 <!-- ### Black box architecture:
