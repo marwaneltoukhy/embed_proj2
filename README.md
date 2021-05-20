@@ -1,4 +1,4 @@
-### Project 2 proposal
+# Project 2
 
 ## Authors: 
 - Marwan Abbas
@@ -7,31 +7,33 @@
 ## Repo link:
 https://github.com/marwaneltoukhy/embed_proj2/tree/main
 
-## Used Materials:
-- stm32
-- esp32
+## Hardware Used:
+- STM32
+- ESP32
 - dagu car
 
 ## software components:
 - STM32cubMX
 - keil vision v5
-- arduino ide 
-## Problem Description: 
+- arduino IDE 
 
-Our project proposal is using STM32 Nucleo board and esp32. we are building an application using those 2 microcontrollers to automate the process of collecting the finger print for indoor localization. Indoor localization interest have been on the rise lately and researchers are trying to create an app like GPS that can be used anywhere in any kind of building to estimate the user location to help him/her navigate inside a huge building or to help in the discovery of close by services. but the overhead of collecting the fingerprint manually reduce the efficiency of the system because researcher don't collect a lot of data and by that they are not certain if their technique can be generalized or not. so we are planning on building an application which will automate this process for the researchers so that they can concentrate more on the techniques they are developing rather than the collection of data.
+## Problem Statement: 
 
-until now The application  have only 1 starting point, and the map is being hardcoded in the micro-controller 
+Indoor positioning systems has been around for decades now, and it has been a hot topic in research eversince. But Indoor positioning systems has a huge overhead of collecting the data of the Received Signal Strength Indicator (RSSI) of WiFi inside the buildings, researchers have to walk through the whole building with a reader to read the RSSI, which is tedious. Our project is a proposed solution to help researchers with their mission, by collecting the RSSI of a floor automatically. Our system will have minimal human interaction, it would need the user to write a simple text file that describes the floor for the dagu to move accordingly. The text file would need to be saved on a Micro SD card, and inserted in the Micro SD Card Adapter. The user will then leave the dagu at the starting position, the dagu will then go through the whole floor stopping every 1 meter and buzz when it is done, the SD card will have a file called "wifidata.csv" that has all the WiFi points names and the respective RSSI.
 
 ## Architecture:
 
-### Architecture of the whole system:
+### Architecture of the system:
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/architecture.png)
+
+### Flow of the system:
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/archi_des.png)
 
-### Black box architecture:
+<!-- ### Black box architecture:
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/black_box.png)
 
 ### Architecture of STM32 with dagu:
-![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/proto_desing_1.PNG)
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/proto_desing_1.PNG) -->
 
 
 # Demo 1:
