@@ -31,6 +31,8 @@ The wheel encoder is put on the Dagu wheels to calculate exactly how many times 
 
 There's a MUX so that one Micro SD card is used for both reading the directions by the STM32 and writing the .csv file using the ESP32
 
+The Pololu TRex DMC takes the commands from the STM32 UART to drive the motors of the Dagu
+
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/architecture.png)
 
 ### Flow of the system:
