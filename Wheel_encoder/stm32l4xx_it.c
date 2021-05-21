@@ -180,12 +180,17 @@ void PendSV_Handler(void)
   * @brief This function handles System tick timer.
   */
 
+
+
 	extern int volatile Number_Of_States;
+	extern int volatile Number_Of_States_2;
 	extern int volatile Number_Of_Rotations;
+	extern int volatile Number_Of_Rotations_2;
+	extern int volatile Number_Of_Rotations_3;
 	extern int volatile previous_state;
-
-
-
+	extern int volatile previous_state_2;
+	extern float volatile distance_rotation_r;
+	extern float volatile distance_rotation_l;
 
 void SysTick_Handler(void)
 {
@@ -194,15 +199,29 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-		if(previous_state!=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11))
+		if(previous_state!=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0))
 		{
 			Number_Of_States++;
-			previous_state=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11);
+			previous_state=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);
+		}
+		if (previous_state_2!=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11))
+		{
+			Number_Of_States_2++;
+			previous_state_2=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11);
 		}
 		if(Number_Of_States==12)
 		{
 			Number_Of_States=0;
 			Number_Of_Rotations++;
+		}
+//		if(Number_Of_States==6 || Number_Of_States==12)
+//		{
+//			Number_Of_Rotations_3++;
+//		}
+		if(Number_Of_States_2==12)
+		{
+			Number_Of_States_2=0;
+			Number_Of_Rotations_2++;
 		}
   /* USER CODE END SysTick_IRQn 1 */
 }
