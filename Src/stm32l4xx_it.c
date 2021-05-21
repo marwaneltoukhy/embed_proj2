@@ -1,80 +1,63 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    stm32l4xx_it.c
+  * @file    stm32f4xx_it.c
   * @brief   Interrupt Service Routines.
   ******************************************************************************
-  * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * COPYRIGHT(c) 2019 STMicroelectronics
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * Redistribution and use in source and binary forms, with or without modification,
+  * are permitted provided that the following conditions are met:
+  *   1. Redistributions of source code must retain the above copyright notice,
+  *      this list of conditions and the following disclaimer.
+  *   2. Redistributions in binary form must reproduce the above copyright notice,
+  *      this list of conditions and the following disclaimer in the documentation
+  *      and/or other materials provided with the distribution.
+  *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  *      may be used to endorse or promote products derived from this software
+  *      without specific prior written permission.
+  *
+  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include "stm32l4xx_hal.h"
+#include "stm32l4xx.h"
 #include "stm32l4xx_it.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-#include <stdio.h>
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN TD */
-
-/* USER CODE END TD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
- 
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+volatile uint8_t FatFsCnt = 0;
+volatile uint8_t Timer1, Timer2;
 
+void SDTimer_Handler(void){
+	if(Timer1 > 0)
+		Timer1--;
+	if(Timer2 > 0)
+		Timer2--;
+}
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern I2C_HandleTypeDef hi2c1;
-extern TIM_HandleTypeDef htim1;
-/* USER CODE BEGIN EV */
-extern TIM_HandleTypeDef htim1;
-extern UART_HandleTypeDef huart2;
-int change = 0;
-volatile int val1, val2;
-volatile float diff, dist;
-extern int f, Buzz_delay;
-extern int turn;
-/* USER CODE END EV */
+extern DMA_HandleTypeDef hdma_spi1_tx;
+extern SPI_HandleTypeDef hspi1;
 
 /******************************************************************************/
-/*           Cortex-M4 Processor Interruption and Exception Handlers          */ 
+/*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
+
 /**
-  * @brief This function handles Non maskable interrupt.
-  */
+* @brief This function handles Non maskable interrupt.
+*/
 void NMI_Handler(void)
 {
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
@@ -86,8 +69,8 @@ void NMI_Handler(void)
 }
 
 /**
-  * @brief This function handles Hard fault interrupt.
-  */
+* @brief This function handles Hard fault interrupt.
+*/
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
@@ -98,11 +81,14 @@ void HardFault_Handler(void)
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
+  /* USER CODE BEGIN HardFault_IRQn 1 */
+
+  /* USER CODE END HardFault_IRQn 1 */
 }
 
 /**
-  * @brief This function handles Memory management fault.
-  */
+* @brief This function handles Memory management fault.
+*/
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
@@ -113,11 +99,14 @@ void MemManage_Handler(void)
     /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
     /* USER CODE END W1_MemoryManagement_IRQn 0 */
   }
+  /* USER CODE BEGIN MemoryManagement_IRQn 1 */
+
+  /* USER CODE END MemoryManagement_IRQn 1 */
 }
 
 /**
-  * @brief This function handles Prefetch fault, memory access fault.
-  */
+* @brief This function handles Pre-fetch fault, memory access fault.
+*/
 void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
@@ -128,11 +117,14 @@ void BusFault_Handler(void)
     /* USER CODE BEGIN W1_BusFault_IRQn 0 */
     /* USER CODE END W1_BusFault_IRQn 0 */
   }
+  /* USER CODE BEGIN BusFault_IRQn 1 */
+
+  /* USER CODE END BusFault_IRQn 1 */
 }
 
 /**
-  * @brief This function handles Undefined instruction or illegal state.
-  */
+* @brief This function handles Undefined instruction or illegal state.
+*/
 void UsageFault_Handler(void)
 {
   /* USER CODE BEGIN UsageFault_IRQn 0 */
@@ -143,11 +135,14 @@ void UsageFault_Handler(void)
     /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
     /* USER CODE END W1_UsageFault_IRQn 0 */
   }
+  /* USER CODE BEGIN UsageFault_IRQn 1 */
+
+  /* USER CODE END UsageFault_IRQn 1 */
 }
 
 /**
-  * @brief This function handles System service call via SWI instruction.
-  */
+* @brief This function handles System service call via SWI instruction.
+*/
 void SVC_Handler(void)
 {
   /* USER CODE BEGIN SVCall_IRQn 0 */
@@ -159,8 +154,8 @@ void SVC_Handler(void)
 }
 
 /**
-  * @brief This function handles Debug monitor.
-  */
+* @brief This function handles Debug monitor.
+*/
 void DebugMon_Handler(void)
 {
   /* USER CODE BEGIN DebugMonitor_IRQn 0 */
@@ -172,8 +167,8 @@ void DebugMon_Handler(void)
 }
 
 /**
-  * @brief This function handles Pendable request for system service.
-  */
+* @brief This function handles Pendable request for system service.
+*/
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
@@ -184,119 +179,61 @@ void PendSV_Handler(void)
   /* USER CODE END PendSV_IRQn 1 */
 }
 
+extern int volatile Number_Of_States;
+extern int volatile Number_Of_States_2;
+extern int volatile Number_Of_Rotations;
+extern int volatile Number_Of_Rotations_2;
+extern int volatile Number_Of_Rotations_3;
+extern int volatile previous_state;
+extern int volatile previous_state_2;
+extern float volatile distance_rotation_r;
+extern float volatile distance_rotation_l;
 /**
-  * @brief This function handles System tick timer.
-  */
+* @brief This function handles System tick timer.
+*/
 void SysTick_Handler(void)
 {
-  /* USER CODE BEGIN SysTick_IRQn 0 */
+	/* USER CODE BEGIN SysTick_IRQn 0 */
+	if(Timer1 > 0)
+		Timer1--;
 
-	  /* USER CODE BEGIN TIM1_CC_IRQn 0 */
+	if(Timer2 > 0)
+		Timer2--;
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
+  HAL_SYSTICK_IRQHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+	if(previous_state!=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0))
+	{
+		Number_Of_States++;
+		previous_state=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);
+	}
+	if (previous_state_2!=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11))
+	{
+		Number_Of_States_2++;
+		previous_state_2=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11);
+	}
+	if(Number_Of_States==12)
+	{
+		Number_Of_States=0;
+		Number_Of_Rotations++;
+	}
+	if(Number_Of_States_2==12)
+	{
+		Number_Of_States_2=0;
+		Number_Of_Rotations_2++;
+	}
   /* USER CODE END SysTick_IRQn 1 */
 }
 
-
 /******************************************************************************/
-/* STM32L4xx Peripheral Interrupt Handlers                                    */
+/* STM32F4xx Peripheral Interrupt Handlers                                    */
 /* Add here the Interrupt Handlers for the used peripherals.                  */
 /* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32l4xx.s).                    */
+/* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
 
-/**
-  * @brief This function handles TIM1 capture compare interrupt.
-  */
-void TIM1_CC_IRQHandler(void)
-{
-	
-	char output[100] = {0}; 
-		if(change == 0){
-		val1 = HAL_TIM_ReadCapturedValue(&htim1, TIM_CHANNEL_1);
-		__HAL_TIM_SET_CAPTUREPOLARITY(&htim1, TIM_CHANNEL_1, TIM_INPUTCHANNELPOLARITY_FALLING);
-		change = 1;
-	}
-	else{
-		val2 = HAL_TIM_ReadCapturedValue(&htim1, TIM_CHANNEL_1);
-		__HAL_TIM_SET_CAPTUREPOLARITY(&htim1, TIM_CHANNEL_1, TIM_INPUTCHANNELPOLARITY_RISING);
-		change = 0;
-		if(val1 > val2)
-			diff = val1-val2;
-		else diff = val2-val1;
-		dist = diff/58;
-		sprintf(output, "distance: %.4f \r\n", dist);
-		HAL_UART_Transmit(&huart2,(uint8_t*)output, sizeof(output), HAL_MAX_DELAY);
-	}
-  HAL_TIM_IRQHandler(&htim1);
-
-  /* USER CODE END TIM1_CC_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
-  /* USER CODE BEGIN TIM1_CC_IRQn 1 */
-//		if (distance <= 4)
-//			{
-//			f = 200;
-//			Buzz_delay = 200;
-//		}
-//	if(distance < 2 || distance > 100)
-//		turn = 0;
-//	else{
-//		if (distance <=40)
-//			{
-//				turn = 1;
-//			}
-//		else{
-//				turn = 0;
-//			}
-//		}
-//		else if (distance <=12)
-//			{
-//			f = 600;
-//			Buzz_delay = 600;
-//		}
-//		else if (distance <=16)
-//			{
-//			f = 800;
-//			Buzz_delay = 800;
-//		}
-//		else
-//		{
-//			f = 1000;
-//			Buzz_delay = 1000;
-//		}
-  /* USER CODE END TIM1_CC_IRQn 1 */
-}
-
-/**
-  * @brief This function handles I2C1 event interrupt.
-  */
-void I2C1_EV_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
-
-  /* USER CODE END I2C1_EV_IRQn 0 */
-  HAL_I2C_EV_IRQHandler(&hi2c1);
-  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
-
-  /* USER CODE END I2C1_EV_IRQn 1 */
-}
-
-/**
-  * @brief This function handles I2C1 error interrupt.
-  */
-void I2C1_ER_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
-
-  /* USER CODE END I2C1_ER_IRQn 0 */
-  HAL_I2C_ER_IRQHandler(&hi2c1);
-  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
-
-  /* USER CODE END I2C1_ER_IRQn 1 */
-}
 
 /* USER CODE BEGIN 1 */
 
