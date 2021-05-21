@@ -60,20 +60,21 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+	int volatile Number_Of_States=0;
+	int volatile Number_Of_States_2=0;
+	int volatile Number_Of_Rotations=0;
+	int volatile Number_Of_Rotations_2=0;
+	int volatile Number_Of_Rotations_3=0;
+	int volatile previous_state;
+	int volatile previous_state_2;
+	float volatile distance_rotation_r=0;
+	float volatile distance_rotation_l=0;
 /* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
   * @retval int
   */
-	
-		
-	int volatile Number_Of_States=0;
-	int volatile Number_Of_Rotations=0;
-	int volatile previous_state;
-	
-	
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -107,14 +108,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,0);
+//	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,0);
 	previous_state=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11);
 	int flag=1;
-	char temp_directions[]={'F'};
-	int volatile temp_directions_count=0;
-	float volatile distance;
+	char temp_directions[]={'F','L','F','R','F'};
+	int temp_directions_count=0;
+	float volatile distance=0.0;
+
 	previous_state=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11);
-  while (1)
+	previous_state_2=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);
+   while (1)
   {
        /* USER CODE END WHILE */
 		uint8_t direction[] = {0xC1, 0xC9, 0xC1, 0xC9,0xC0};
@@ -125,83 +128,117 @@ int main(void)
 		
 		if(flag==1 && temp_directions[temp_directions_count]=='F')
 		{
-		HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
-		HAL_Delay(10);	
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-			//HAL_Delay(10);
-		HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-		}
-		
+			HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+			//HAL_Delay(10);	
+			HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+			//HAL_Delay(10);	
+			HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
+			distance=Number_Of_Rotations*(12.5/100);
+			if(distance >= 0.85){
+				temp_directions_count++;
+				Number_Of_Rotations=0;
+				Number_Of_Rotations_2=0;
+				HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+				HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+				HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+				HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+				HAL_Delay(5000);
+			}
+		}	
 		else if (flag==1 && temp_directions[temp_directions_count]=='L')
 		{
-		HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
-		HAL_Delay(10);	
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-			//HAL_Delay(10);
-		HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
+		//	while (distance_rotation_l <0.50)
+		//	{
+			HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+		//	HAL_Delay(10);	
+			HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+			//HAL_Delay(10);	
+			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+			distance=Number_Of_Rotations_2*(12.5/100);
+			if(distance >= 0.75){
+				temp_directions_count++;
+				Number_Of_Rotations=0;
+				Number_Of_Rotations_2=0;
+			}
+				//distance_rotation_l=Number_Of_Rotations_2*(12.5/100);
+			//}
+//			Number_Of_Rotations_2=0;
+//			temp_directions_count++;
 		}
 		else if (flag==1 && temp_directions[temp_directions_count]=='R')
 		{
-		HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
-		HAL_Delay(10);	
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-			//HAL_Delay(10);
-		HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-		}
-		else if (flag==1 && temp_directions[temp_directions_count]=='B')
-		{
-		HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
-		HAL_Delay(10);	
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-			//HAL_Delay(10);
-		HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
-		HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
-		}
-		
-//		if(previous_state!=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11))
-//		{
-//			Number_Of_States++;
-//			previous_state=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_11);
-//		}
-		if(Number_Of_States==12)
-		{
-			Number_Of_States=0;
-			Number_Of_Rotations++;
-		}
-		//HAL_Delay(50);
-		// circ of the wheel is 12.5 cm 
-		distance=Number_Of_Rotations*(12.5/100);
-		
-		if (distance >=1.0)
-		{
-			HAL_UART_Transmit(&huart2,"1m",sizeof("1m"),500);
-			distance=0;
-			temp_directions_count=temp_directions_count+1;
-//			if(temp_directions_count==1)
+//			while (distance_rotation_r <0.50)
 //			{
-//			flag=0;
+				HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+			//	HAL_Delay(10);	
+				HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+				HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+			//	HAL_Delay(10);	
+				HAL_UART_Transmit(&huart1, &speed[0], 1, HAL_MAX_DELAY);
+				distance=Number_Of_Rotations*(12.5/100);
+				if(distance >= .50){
+					temp_directions_count++;
+					Number_Of_Rotations=0;
+					Number_Of_Rotations_2=0;
+				}
+				//distance_rotation_r=Number_Of_Rotations*(12.5/100);
 //			}
+//			
+//		Number_Of_Rotations=0;	
+//		temp_directions_count++;
+		}
+		
+		
+//		distance_rotation_l=Number_Of_Rotations_2*(12.5/100);
+//		distance_rotation_r=Number_Of_Rotations*(12.5/100);
+//		// r=30 --> circle of the car  
+//		// 0.47 --> 90 degrees 
+//		// 0.235--> 45 defrees 
+//		
+//		if(distance >= 1.00){
+//			temp_directions_count++;
+//			Number_Of_Rotations=0;
+//		}
+//		if(distance_rotation_l >= 0.5){
+//			temp_directions_count++;
+//			Number_Of_Rotations_2=0;
+//		}
+//		if(distance_rotation_r >= 0.5){
+//			temp_directions_count++;
+//			Number_Of_Rotations=0;
+//		}
+		if(temp_directions_count==5)
+		{
 			flag=0;
-			
-			
-			
 			HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
 			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
 			HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
-			//HAL_Delay(500);
 			HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
 		}
-    /* USER CODE BEGIN 3 */
-  }
+		
+		
+//		if (distance >=1.00)
+//		{
+//		//	HAL_UART_Transmit(&huart2,"1m",sizeof("1m"),500);
+//	//		distance=0;
+////			if (temp_directions[temp_directions_count]=='F')
+////			{
+////				temp_directions_count=temp_directions_count+1;
+////			}
+//			temp_directions_count=temp_directions_count+1;
+//			Number_Of_Rotations=0;
+//			if(temp_directions_count==5)
+//			{
+//				flag=0;
+//				HAL_UART_Transmit(&huart1, &direction[0], 1, HAL_MAX_DELAY);
+//				HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+//				HAL_UART_Transmit(&huart1, &direction[1], 1, HAL_MAX_DELAY);
+//				HAL_UART_Transmit(&huart1, &speed[2], 1, HAL_MAX_DELAY);
+//			}
+//		}
+ }
   /* USER CODE END 3 */
 }
 
@@ -340,8 +377,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PA11 */
-  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  /*Configure GPIO pins : PA0 PA11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_11;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
