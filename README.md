@@ -87,6 +87,7 @@ Due to the lack of components we had to make our own multiplexer using NAND gate
 
 Used 4 SN74HC00N chip to construct the MUX
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/nand.png | width=100)
+<img src="https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/nand.png" width="200" />
 
 Architecure of one MUX
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/mux.png)
