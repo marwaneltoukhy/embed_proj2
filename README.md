@@ -77,7 +77,7 @@ The SD and SPI libraries were used to write the .csv file on the SD card.
   - Formatting the MicroSD card to support FATFS
   - Doesn't support MicroSD cards with memory size greater than 32GB
 
-![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/sd.png)
+<img src="https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/sd.png" width="200" />
 
 [Datasheet for reference](http://datalogger.pbworks.com/w/file/fetch/89507207/Datalogger%20-%20SD%20Memory%20Reader%20Datasheet.pdf)
 [Source of the picture](https://lastminuteengineers.com/arduino-micro-sd-card-module-tutorial/)
@@ -86,7 +86,6 @@ The SD and SPI libraries were used to write the .csv file on the SD card.
 Due to the lack of components we had to make our own multiplexer using NAND gates.
 
 Used 4 SN74HC00N chip to construct the MUX
-![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/nand.png | width=100)
 <img src="https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/nand.png" width="200" />
 
 Architecure of one MUX
