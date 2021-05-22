@@ -129,7 +129,7 @@ We believe that this project would be beneficial because it will reduce the over
 ## Presentation Link
 https://drive.google.com/file/d/1tfSCS1q_egZYdxbkJUDPdCJWKFP4syyZ/view?usp=sharing
 
-## Respurces 
+## Resources 
 
 - [wheel encoder](https://www.electroschematics.com/motor-speed-sensor-module-circuit/)
 - [ESP32 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf)
