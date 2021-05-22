@@ -135,8 +135,11 @@ For future engineers, we might need a more autonomous way to control the Dagu, m
 We believe that this project would be beneficial because it will reduce the overhead of collecting the RSSI "WIFI signal strength at different location" to build the fingerprint of the building. by automating this process researchers can concentrate more on the different algorithms and techniques in which they can create to reduce the absolute mean error between the user location and the estimated location and try to create better techniques that can be robust to environment changes and can be generalized to different building at different locations. 
 
 
-## Presentation Link
+## Presentation MS2 Link
 https://drive.google.com/file/d/1tfSCS1q_egZYdxbkJUDPdCJWKFP4syyZ/view?usp=sharing
+
+## Final Presentation Link
+https://drive.google.com/file/d/1fyh6Bcv9o0Kg8UTmcHzeXHSopLF01OPG/view?usp=sharing
 
 ## Resources 
 
