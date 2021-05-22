@@ -103,7 +103,7 @@ Architecure of the MUX in our system
 - the small wheel have 12 gaps and solid parts which make the entire wheel, so when the output pin state changes 12 times then we know that the dagu wheels have completed exactly 1 rotation 
 - we calculated the distance that the dagu moved by keeping track of the number of rotations that the wheels did and multipling that number by the radius of the wheel
 - we calculated the angles in which the car should move for example 0 or 45 degrees by calculating the radius of the car and through it we calculated the arc that the car should move in to move exactly with the angle that we want  
-![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/mux_archi.png)
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/wheel_encoder.jpg)
 
 
 # Demo 1:
