@@ -96,7 +96,14 @@ Architecure of the MUX in our system
 
 ### Wheel Encoder
 
-OMAR
+- The wheel Encoder is used to accuratly localize the dagu and know the exact distance that it should move before stopping. 
+- The wheel encoder is divided into 2 parts as we can see in the digram below, the firs part is the small wheel which will be placed beside the dagu wheel to move with the dagu acceleration and the other part is the chip, the chip has a reciver and transmerter which transmit light continusly.
+- The wheel encoder has 3 pins, VCC which should be 3.3V, grnd and output pin.
+- the output pin of the wheel encoder start with a high value and when the wheel starts to move and cut the light it changes states from high to low and then when the light is not being blocked anymore is goes back to high again
+- the small wheel have 12 gaps and solid parts which make the entire wheel, so when the output pin state changes 12 times then we know that the dagu wheels have completed exactly 1 rotation 
+- we calculated the distance that the dagu moved by keeping track of the number of rotations that the wheels did and multipling that number by the radius of the wheel
+- we calculated the angles in which the car should move for example 0 or 45 degrees by calculating the radius of the car and through it we calculated the arc that the car should move in to move exactly with the angle that we want  
+![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/mux_archi.png)
 
 
 # Demo 1:
