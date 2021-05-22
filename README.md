@@ -103,6 +103,8 @@ Architecure of the MUX in our system
 - the small wheel have 12 gaps and solid parts which make the entire wheel, so when the output pin state changes 12 times then we know that the dagu wheels have completed exactly 1 rotation 
 - we calculated the distance that the dagu moved by keeping track of the number of rotations that the wheels did and multipling that number by the radius of the wheel
 - we calculated the angles in which the car should move for example 0 or 45 degrees by calculating the radius of the car and through it we calculated the arc that the car should move in to move exactly with the angle that we want  
+- the equation to move 1 meter forward is Distance = Number_of_revolutions * (12.5/100). Where 12.5 is the diameter of the wheel in cm and we devide it by 100 to make it into meters
+- the equation to move Certain degree is Distance = Number_of_revolutions * (47/100) where 47 is the distance between two wheels or the Diameter of the whole car
 ![](https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/wheel_encoder.jpg)
 
 
