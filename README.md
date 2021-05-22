@@ -86,6 +86,7 @@ The SD and SPI libraries were used to write the .csv file on the SD card.
 Due to the lack of components we had to make our own multiplexer using NAND gates.
 
 Used 4 SN74HC00N chip to construct the MUX
+
 <img src="https://github.com/marwaneltoukhy/embed_proj2/blob/main/media/nand.png" width="200" />
 
 Architecure of one MUX
