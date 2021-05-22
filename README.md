@@ -116,6 +116,10 @@ Architecure of the MUX in our system
 
 [ESP32 data gathering](https://drive.google.com/file/d/1Y1yaBVXY792gIeG7-uqBGNeryCGUzogs/view?usp=sharing)
 
+# Final Demo:
+
+[Dagu moving according to input file](https://drive.google.com/file/d/14HkPJqzwtWdPvFR1Vuug3EE_rDBVpAnj/view?usp=sharing)
+
 ## Challenges:
 
 - Our main challenge was to insert the wheel encoder in the dagu, as the dagu wheels are connected directly to the DC motor
