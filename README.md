@@ -128,3 +128,11 @@ We believe that this project would be beneficial because it will reduce the over
 
 ## Presentation Link
 https://drive.google.com/file/d/1tfSCS1q_egZYdxbkJUDPdCJWKFP4syyZ/view?usp=sharing
+
+## Respurces 
+
+- [wheel encoder] (https://www.electroschematics.com/motor-speed-sensor-module-circuit/)
+- [ESP32 Datasheet] (https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf)
+- [STM32L432KC Datasheet] (https://www.st.com/resource/en/datasheet/stm32l432kc.pdf)
+- [Micro SD Card Module] (https://5.imimg.com/data5/YP/WB/MY-1833510/micro-sd-card-module-for-arduino.pdf)
+- [Micro SD Card Module] (http://datalogger.pbworks.com/w/file/fetch/89507207/Datalogger%20-%20SD%20Memory%20Reader%20Datasheet.pdf)
