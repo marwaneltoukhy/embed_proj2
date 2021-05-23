@@ -4,8 +4,9 @@
 - Marwan Abbas        [Github Profile](https://github.com/marwaneltoukhy)
 - Omar Abu Gabal
 
-## Repo link:
-https://github.com/marwaneltoukhy/embed_proj2/tree/main
+## Problem Statement: 
+
+Indoor positioning systems has been around for decades now, and it has been a hot topic in research eversince. But Indoor positioning systems has a huge overhead of collecting the data of the Received Signal Strength Indicator (RSSI) of WiFi inside the buildings, researchers have to walk through the whole building with a reader to read the RSSI, which is tedious. Our project is a proposed solution to help researchers with their mission, by collecting the RSSI of a floor automatically. Our system will have minimal human interaction, it would need the user to write a simple text file that describes the floor for the dagu to move accordingly. The text file would need to be saved on a Micro SD card, and inserted in the Micro SD Card Adapter. The user will then leave the dagu at the starting position, the dagu will then go through the whole floor stopping every 1 meter and buzz when it is done, the SD card will have a file called "wifidata.csv" that has all the WiFi points names and the respective RSSI.
 
 ## Hardware Used:
 - STM32
@@ -20,10 +21,6 @@ https://github.com/marwaneltoukhy/embed_proj2/tree/main
 - STM32cubMX
 - keil vision v5
 - arduino IDE 
-
-## Problem Statement: 
-
-Indoor positioning systems has been around for decades now, and it has been a hot topic in research eversince. But Indoor positioning systems has a huge overhead of collecting the data of the Received Signal Strength Indicator (RSSI) of WiFi inside the buildings, researchers have to walk through the whole building with a reader to read the RSSI, which is tedious. Our project is a proposed solution to help researchers with their mission, by collecting the RSSI of a floor automatically. Our system will have minimal human interaction, it would need the user to write a simple text file that describes the floor for the dagu to move accordingly. The text file would need to be saved on a Micro SD card, and inserted in the Micro SD Card Adapter. The user will then leave the dagu at the starting position, the dagu will then go through the whole floor stopping every 1 meter and buzz when it is done, the SD card will have a file called "wifidata.csv" that has all the WiFi points names and the respective RSSI.
 
 ## Architecture:
 
